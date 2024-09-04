@@ -7,27 +7,26 @@ class Solution
 {
 	public:
 	//Function to find number of strongly connected components in the graph.
-	
-	void dfs(int node,vector<int>graph[],vector<int>&vis,stack<int>&st)
+	void dfs(int node,vector<int>adj[],vector<int>&vis,stack<int>&st)
 	{
 	    vis[node]=1;
-	    for(auto it:graph[node])
+	    for(auto it:adj[node])
 	    {
 	        if(!vis[it])
 	        {
-	            dfs(it,graph,vis,st);
+	            dfs(it,adj,vis,st);
 	        }
 	    }
 	    st.push(node);
 	}
-	void dfs2(int node,vector<int>graph[],vector<int>&vis)
+	void dfs2(int node,vector<int>adj[],vector<int>&vis)
 	{
 	    vis[node]=1;
-	    for(auto it:graph[node])
+	    for(auto it:adj[node])
 	    {
 	        if(!vis[it])
 	        {
-	            dfs2(it,graph,vis);
+	            dfs2(it,adj,vis);
 	        }
 	    }
 	}
@@ -59,19 +58,19 @@ class Solution
                 revGraph[it].push_back(i);
             }
         }
-        int cnt=0;
-        fill(vis.begin(), vis.end(), 0);
+        fill(vis.begin(),vis.end(),0);
+        int ans=0;
         while(!st.empty())
         {
-            int node=st.top();
+            int top=st.top();
             st.pop();
-            if(!vis[node])
+            if(!vis[top])
             {
-                dfs2(node,revGraph,vis);
-                cnt++;
+                dfs2(top,revGraph,vis);
+                ans++;
             }
         }
-        return cnt;
+        return ans;
     }
 };
 
