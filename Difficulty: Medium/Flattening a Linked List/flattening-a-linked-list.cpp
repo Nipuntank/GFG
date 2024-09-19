@@ -42,78 +42,34 @@ struct Node{
 
 class Solution {
   public:
-        
-        void insert(Node* prev, Node* l2){
-            l2->bottom= prev->bottom;
-            prev->bottom=l2;
+    // Function which returns the  root of the flattened linked list.
+    Node *flatten(Node *root) {
+        // Your code here
+        priority_queue<pair<int,Node *>,vector<pair<int,Node *>>,greater<pair<int,Node *>>>pq;
+        Node *head=new Node(0);
+        Node *tail=head;
+        Node *temp=root;
+        while(temp)
+        {
+            pq.push({temp->data,temp});
+            temp=temp->next;
         }
-        
-        // void merge(Node* l1, Node* l2){
-        //     Node *prev = l1;
-        //     Node *temp;
-        //     while(l1 && l2){
-        //         if(l1->data <= l2->data){
-        //             prev=l1;
-        //             l1=l1->bottom;
-        //         }
-        //         else if(l2->data < l1->data){
-        //             temp=l2->bottom;
-        //             insert(prev, l2);
-        //             prev=l2;
-        //             l2=temp;
-        //         }
-        //     }
-        //     if(l1!=nullptr){
-        //         return;
-        //     }
-        //     else if(l2!=nullptr){
-        //         prev->bottom=l2;
-        //     }
-        // }
-        void merge(Node*& l1, Node* l2){
-    Node *dummy = new Node(0); // Dummy node to simplify edge cases
-    Node *prev = dummy;
-    
-    while (l1 && l2) {
-        if (l1->data <= l2->data) {
-            prev->bottom = l1;
-            l1 = l1->bottom;
-        } else {
-            prev->bottom = l2;
-            l2 = l2->bottom;
+        while(!pq.empty())
+        {
+            auto it=pq.top();
+            pq.pop();
+            if(it.second->bottom)
+            {
+                pq.push({it.second->bottom->data,it.second->bottom});
+            }
+            tail->bottom=it.second;
+            tail=tail->bottom;
+            
         }
-        prev = prev->bottom;
+        head->next=NULL;
+        return head->bottom;
+        
     }
-
-    if (l1) prev->bottom = l1;
-    if (l2) prev->bottom = l2;
-
-    l1 = dummy->bottom; 
-    delete dummy; 
-}
-    // Node *flatten(Node *root) {
-    //     // Your code here
-    //     Node *l1= root;
-    //     Node *l2= root->next;
-    //     Node *nex= l2;
-    //     while(l2 && nex){
-    //     nex=l2->next;
-    //     merge(l1, l2);
-    //     l2=nex;
-    //     }
-    //     return l1;
-    // }
-    Node* flatten(Node *root) {
-    if (!root || !root->next) return root;
-
-    // Recursively flatten the next nodes first
-    root->next = flatten(root->next);
-
-    
-    merge(root, root->next);
-
-    return root;
-}
 };
 
 
