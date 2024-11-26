@@ -20,28 +20,21 @@ struct Node {
 class Solution {
   public:
     // Function to check whether a Binary Tree is BST or not.
-    void inorder(Node *root,vector<int>&v)
+    bool helper(Node *root,int mini,int maxi)
     {
-        if(root==NULL)
+        if(!root)
         {
-            return ;
+            return true;
         }
-        inorder(root->left,v);
-        v.push_back(root->data);
-        inorder(root->right,v);
+        if(root->data<=mini || root->data>=maxi)
+        {
+            return false;
+        }
+        return helper(root->left,mini,root->data) && helper(root->right,root->data,maxi);
     }
     bool isBST(Node* root) {
         // Your code here
-        vector<int>v;
-        inorder(root,v);
-        for(int i=0;i<v.size()-1;i++)
-        {
-            if(v[i]>=v[i+1])
-            {
-                return false;
-            }
-        }
-        return true;
+        return helper(root,INT_MIN,INT_MAX);
     }
 };
 
@@ -140,6 +133,7 @@ int main() {
 
         else
             cout << "false\n";
+        cout << "~" << endl;
     }
     return 0;
 }
