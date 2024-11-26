@@ -106,50 +106,52 @@ class Solution{
     vector <int> zigZagTraversal(Node* root)
     {
     	// Code here
-    	vector<int>ans;
     	if(!root)
     	{
-    	    return ans;
+    	    return {};
     	}
-    	deque<Node *>dq;
-    	int cnt=1;
-    	dq.push_front(root);
-    	while(!dq.empty())
+    	vector<int>ans;
+    	stack<Node *>even;
+    	stack<Node *>odd;
+    	odd.push(root);
+    	while(!odd.empty() || !even.empty())
     	{
-    	    int n=dq.size();
-    	    while(n--)
+    	    if(!odd.empty())
+    	   {
+        	    while(!odd.empty())
+        	   {
+        	       Node *front=odd.top();
+        	       odd.pop();
+        	        ans.push_back(front->data);
+        	        if(front->left)
+        	        {
+        	            even.push(front->left);
+        	        }
+        	        if(front->right)
+        	        {
+        	            even.push(front->right);
+        	        }
+        	    }
+        	}
+    	    else
     	    {
-    	       
-    	        if(cnt%2==1)
+    	        while(!even.empty())
     	        {
-    	            Node *temp=dq.front();
-    	            dq.pop_front();
-    	            ans.push_back(temp->data);
-    	            if(temp->left)
-    	            {
-    	                dq.push_back(temp->left);
-    	            }
-    	            if(temp->right)
-    	            {
-    	                dq.push_back(temp->right);
-    	            }
+        	        Node *front=even.top();
+        	        even.pop();
+        	        ans.push_back(front->data);
+        	        if(front->right)
+        	        {
+        	            odd.push(front->right);
+        	        }
+        	        if(front->left)
+        	        {
+        	            odd.push(front->left);
+        	        }
+    	            
     	        }
-    	        else
-    	        {
-    	            Node *temp=dq.back();
-    	            dq.pop_back();
-    	            ans.push_back(temp->data);
-    	            if(temp->right)
-    	            {
-    	                dq.push_front(temp->right);
-    	            }
-    	            if(temp->left)
-    	            {
-    	                dq.push_front(temp->left);
-    	            }
-    	        }
+    	        
     	    }
-    	    cnt++;
     	}
     	return ans;
     }
@@ -181,7 +183,9 @@ int main() {
 
         cout << endl;
      
-    }
+    
+cout << "~" << "\n";
+}
     return 0;
 }
 
