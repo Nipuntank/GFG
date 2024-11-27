@@ -104,20 +104,24 @@ public:
         {
             return ans;
         }
-        Node *curr=root;
-        stack<Node*>st;
-        while(curr || !st.empty())
+        while(root)
         {
-            while(curr)
+            if(root->left)
             {
-                st.push(curr);
-                curr=curr->left;
+                Node *temp=root->left;
+                while(temp->right)
+                {
+                    temp=temp->right;
+                }
+                temp->right=root;
+                temp=root->left;
+                root->left=NULL;
+                root=temp;
             }
-            curr=st.top();
-            st.pop();
-            ans.push_back(curr->data);
-            
-            curr=curr->right;
+            else{
+                ans.push_back(root->data);
+                root=root->right;
+            }
         }
         return ans;
     }
