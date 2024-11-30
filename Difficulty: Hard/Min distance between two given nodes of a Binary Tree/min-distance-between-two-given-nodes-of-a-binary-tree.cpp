@@ -97,52 +97,46 @@ class Solution{
     public:
     /* Should return minimum distance between a and b
     in a tree with given root*/
-    Node *LCA(Node *root,int a,int b)
+    Node *findLCA(Node *root,int a,int b)
     {
-        if(root==NULL || root->data==a || root->data==b)
+        if(!root || root->data==a || root->data==b)
         {
             return root;
         }
-        Node *left=LCA(root->left,a,b);
-        Node *right=LCA(root->right,a,b);
-        if(!left)
+        Node *leftans=findLCA(root->left,a,b);
+        Node *rightans=findLCA(root->right,a,b);
+        if(!leftans)
         {
-            return right;
+            return rightans;
         }
-        else if(!right)
+        else if(!rightans)
         {
-            return left;
+            return leftans;
         }
         else{
             return root;
         }
     }
-    int dist(Node *root,int a,int d)
+    int helper(Node *r1,int a,int d)
     {
-        if(root==NULL)
-        {
+        if(!r1)
             return -1;
-        }
-        if(root->data==a)
-        {
+        if(r1->data==a)
             return d;
-        }
-        int l=dist(root->left,a,d+1);
-        if(l!=-1)
-        {
-            return l;
-        }
-        return dist(root->right,a,d+1);
+        int leftans=helper(r1->left,a,d+1);
+        if(leftans!=-1)
+            return leftans;
+        return  helper(r1->right,a,d+1);
     }
     int findDist(Node* root, int a, int b) {
         // Your code here
-        Node *lca=LCA(root,a,b);
-        if(!lca)
+        if(!root)
         {
-            return -1;
+            return 0;
         }
-        int d1= dist(lca,a,0);
-        int d2=dist(lca,b,0);
+        Node *lca=findLCA(root,a,b);
+        int d1=helper(lca,a,0);
+        int d2=helper(lca,b,0);
         return d1+d2;
     }
 };
