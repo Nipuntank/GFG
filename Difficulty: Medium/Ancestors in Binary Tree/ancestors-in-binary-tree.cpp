@@ -99,24 +99,31 @@ struct Node
 class Solution {
   public:
     // Function should return all the ancestor of the target node
-    bool helper(Node *root,int target,vector<int>&ans)
-    {
-        if(!root)
-            return false;
-        if(root->data==target)
-            return true;
-        if(helper(root->left,target,ans) || helper(root->right,target,ans))
-        {
-            ans.push_back(root->data);
-            return true;
-        }
-        return false;
-    }
     vector<int> Ancestors(struct Node *root, int target) {
         // Code here
         vector<int>ans;
-        helper(root,target,ans);
+        if(!root)
+            return ans;
+        stack<pair<Node*,vector<int>>>st;
+        st.push({root,ans});
+        while(!st.empty())
+        {
+            Node *node=st.top().first;
+            vector<int>v=st.top().second;
+            st.pop();
+            if(node->data==target)
+            {
+                reverse(v.begin(),v.end());
+                return v;
+            }
+            v.push_back(node->data);
+            if(node->right)
+                st.push({node->right,v});
+            if(node->left)
+                st.push({node->left,v});
+        }
         return ans;
+        
     }
 };
 
