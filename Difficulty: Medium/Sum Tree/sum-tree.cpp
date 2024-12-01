@@ -95,29 +95,26 @@ class Solution {
   public:
     int sum(Node *root)
     {
-        if(root==NULL)
-        {
+        if(!root)
             return 0;
-        }
         return root->data+sum(root->left)+sum(root->right);
     }
     bool isSumTree(Node* root) {
         // Your code here
-        if(root==NULL || (!root->left && !root->right))
-        {
+        if(!root ||(!root->left && !root->right))
             return true;
-        }
+        
         bool leftans=isSumTree(root->left);
         bool rightans=isSumTree(root->right);
         
-        int leftSum=sum(root->left);
-        int rightSum=sum(root->right);
-        
-        if(leftans && rightans && leftSum+rightSum==root->data)
+        int l=sum(root->left);
+        int r=sum(root->right);
+        if(leftans && rightans && root->data==l+r)
         {
             return true;
         }
         return false;
+        
     }
 };
 
