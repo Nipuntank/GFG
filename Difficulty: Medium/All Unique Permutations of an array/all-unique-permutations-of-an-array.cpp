@@ -11,7 +11,7 @@ using namespace std;
 class Solution {
   public:
     set<vector<int>>s;
-    void helper(vector<int> arr,int n,int i)
+    void helper(int i,vector<int>&arr,int n)
     {
         if(i==n)
         {
@@ -21,13 +21,13 @@ class Solution {
         for(int j=i;j<n;j++)
         {
             swap(arr[i],arr[j]);
-            helper(arr,n,i+1);
+            helper(i+1,arr,n);
             swap(arr[i],arr[j]);
         }
     }
     vector<vector<int>> uniquePerms(vector<int> &arr ,int n) {
         // code here
-        helper(arr,n,0);
+        helper(0,arr,n);
         return vector<vector<int>>(s.begin(),s.end());
     }
 };
@@ -56,7 +56,9 @@ int main() {
             }
             cout<<"\n";
         }
-    }
+    
+cout << "~" << "\n";
+}
     return 0;
 }
 // } Driver Code Ends
