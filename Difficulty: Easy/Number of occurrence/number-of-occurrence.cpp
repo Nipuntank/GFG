@@ -10,26 +10,9 @@ class Solution {
   public:
     int countFreq(vector<int>& arr, int target) {
         // code here
-        int cnt=0;
-        int s=0,e=arr.size()-1;
-        while(s<=e)
-        {
-            if(e==s)
-            {
-                if(arr[s]==target)
-                {
-                    cnt++;
-                    return cnt;
-                }
-            }
-            if(arr[s]==target)
-                cnt++;
-            if(arr[e]==target)
-                cnt++;
-            s++;
-            e--;
-        }
-        return cnt;
+        int l=lower_bound(arr.begin(),arr.end(),target)-arr.begin();
+        int h=upper_bound(arr.begin(),arr.end(),target)-arr.begin();
+        return h-l;
     }
 };
 
