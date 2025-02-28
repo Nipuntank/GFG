@@ -1,64 +1,68 @@
 //{ Driver Code Starts
-//Initial template for C++
 
-#include<bits/stdc++.h> 
-using namespace std; 
+#include <bits/stdc++.h>
+using namespace std;
+
 
 // } Driver Code Ends
-//User function template for C++
 
-class Solution{   
-public:
-    bool helper(vector<int>&arr,vector<vector<int>>&dp,int sum,int i)
+// User function template for C++
+
+class Solution {
+  public:
+    int helper(int i,int target,vector<int>&arr,vector<vector<int>>&dp)
     {
-        if(sum==0)
-        {
-            return true;
-        }
+        if(target==0)
+            return 1;
+            
         if(i==0)
-        {
-            return arr[0]==sum;
-        }
-        if(dp[i][sum]!=-1)
-        {
-            return dp[i][sum];
-        }
-        int notpick=helper(arr,dp,sum,i-1);
+            return arr[0]==target;
+            
+        if(dp[i][target]!=-1)
+            return dp[i][target];
         int pick=0;
-        if(arr[i]<=sum)
-        {
-            pick=helper(arr,dp,sum-arr[i],i-1);
-        }
-        return dp[i][sum]=pick || notpick;
+        if(arr[i]<=target)
+            pick=helper(i-1,target-arr[i],arr,dp);
+        int notPick=helper(i-1,target,arr,dp);
+        return dp[i][target]=pick||notPick;
     }
-
-    bool isSubsetSum(vector<int>arr, int sum){
-        // code here 
+    bool isSubsetSum(vector<int>& arr, int target) {
+        // code here
         int n=arr.size();
-        vector<vector<int>>dp(n,vector<int>(sum+1,-1));
-        return helper(arr,dp,sum,n-1);
+        vector<vector<int>>dp(n+1,vector<int>(target+1,-1));
+        return helper(n-1,target,arr,dp);
     }
 };
 
+
 //{ Driver Code Starts.
-int main() 
-{ 
+
+int main() {
+
     int t;
-    cin>>t;
-    while(t--)
-    {
-        int N, sum;
-        cin >> N;
-        vector<int> arr(N);
-        for(int i = 0; i < N; i++){
-            cin >> arr[i];
+    cin >> t;
+    cin.ignore();
+    while (t--) {
+        vector<int> arr;
+        string input;
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            arr.push_back(number);
         }
+        int sum;
         cin >> sum;
-        
+        cin.ignore();
+
         Solution ob;
-        cout << ob.isSubsetSum(arr, sum) << endl;
+        if (ob.isSubsetSum(arr, sum))
+            cout << "true" << endl;
+        else
+            cout << "false" << endl;
+        cout << "~" << endl;
     }
-    return 0; 
-} 
+    return 0;
+}
 
 // } Driver Code Ends
