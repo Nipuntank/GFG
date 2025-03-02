@@ -6,51 +6,55 @@ using namespace std;
 
 
 // } Driver Code Ends
+
 // User function Template for C++
 
-class Solution{
+class Solution {
   public:
-    int helper(int *price,vector<vector<int>>&dp,int i,int n)
+    int helper(int i,int len,vector<int>&price,vector<vector<int>>&dp)
     {
         if(i==0)
+            return price[0]*len;
+        if(dp[i][len]!=-1)
+            return dp[i][len];
+        int a=INT_MIN;
+        if(i+1<=len)
         {
-            return n*price[0];
+            a=price[i]+helper(i,len-i-1,price,dp);
         }
-        if(dp[i][n]!=-1)
-        {
-            return dp[i][n];
-        }
-        int a=helper(price,dp,i-1,n);
-        int len=i+1;
-        int b=-1e9;
-        if(len<=n)
-        {
-            b=price[i]+helper(price,dp,i,n-len);
-        }
-        return dp[i][n]=max(a,b);
+        int b=helper(i-1,len,price,dp);
+        return dp[i][len]=max(a,b);
     }
-    int cutRod(int price[], int n) {
-        //code here
+    int cutRod(vector<int> &price) {
+        // code here
+        int n=price.size();
         vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
-        return helper(price,dp,n-1,n);
+        return helper(n-1,n,price,dp);
     }
+    
 };
+
 
 //{ Driver Code Starts.
 
 int main() {
     int t;
-    cin >> t;
+    scanf("%d ", &t);
     while (t--) {
-        int n;
-        cin >> n;
-        int a[n];
-        for (int i = 0; i < n; i++) 
-            cin >> a[i];
-            
+
+        vector<int> a;
+        string input;
+        getline(cin, input);
+        stringstream ss(input);
+        int number;
+        while (ss >> number) {
+            a.push_back(number);
+        }
+
         Solution ob;
 
-        cout << ob.cutRod(a, n) << endl;
+        cout << ob.cutRod(a) << endl;
+        cout << "~" << endl;
     }
     return 0;
 }
